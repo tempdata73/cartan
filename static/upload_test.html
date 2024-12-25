@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>gromov</title>
+	</head>
+	<body>
+		<header>
+			<h1>Subir un examen</h1>
+		</header>
+		<main>
+			<nav>
+				<ul>
+					<li><a href="./index.html">Página principal</a></li>
+					<li><a href="./upload.html">Subir un examen</a></li>
+					<li><a href="#">Todos los cursos</a></li>
+				</ul>
+			</nav>
+			<section>
+				<form
+					id="upload-test"
+					action="#"
+					method="POST"
+					enctype="multipart/form-data"
+				>
+					<label for="course-code">Código del curso:</label>
+					<input type="text" id="course-code" name="course_code" required>
+					<br><br>
+
+					<label for="course-name">Nombre del curso:</label>
+					<input type="text" id="course-name" name="course_name" required>
+					<br><br>
+
+					<label for="period">Periodo:</label>
+					<select id="period" name="period" required>
+						<option value="spring">Primavera</option>
+						<option value="summer">Verano</option>
+						<option value="autumn">Otoño</option>
+					</select>
+					<br><br>
+
+					<label for="year">Año:</label>
+						<input
+							type="number"
+							id="year"
+							name="year"
+							min="2000"
+							max="2100"
+							required
+						>
+					<br><br>
+
+					<label for="prof">Profesor:</label>
+					<input type="text" id="prof" name="prof">
+					<br><br>
+
+					<label for="test-file">Examen:</label>
+					<input
+						type="file"
+						id="test-file"
+						name="test_file"
+						accept=".pdf,.docx,.jpg"
+						required
+					>
+					<br><br>
+
+					<button type="submit">Subir</button>
+				</form>
+			</section>
+		</main>
+		<footer>
+			<p>
+				¿Encontraste un bug?
+				<a href="https://github.com/" target="_blank">Repórtalo en Github</a>.
+			</p>
+		</footer>
+	</body>
+</html>
