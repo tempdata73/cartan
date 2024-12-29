@@ -1,6 +1,8 @@
 # custom
 template.yaml
 arch.txt
+deployment.zip
+package/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
