@@ -162,7 +162,13 @@ Resources:
                   - ec2:DetachNetworkInterface
                   - ec2:AssignPrivateIpAddresses
                   - ec2:UnassignPrivateIpAddresses
-                Resource: "*"
+                Resource: "arn:aws:ec2::::"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs::::"
 
   LambdaUploadExam:
     Type: AWS::Lambda::Function
@@ -201,6 +207,14 @@ Resources:
           - "*"
       TargetFunctionArn: !Ref LambdaUploadExam
 
+  InvokeUploadExamPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunctionUrl
+      FunctionName: !Ref LambdaUploadExam
+      FunctionUrlAuthType: NONE
+      Principal: "*"
+
   # lambda: search courses
   RoleSearchCourse:
     Type: AWS::IAM::Role
@@ -228,7 +242,14 @@ Resources:
                   - ec2:DetachNetworkInterface
                   - ec2:AssignPrivateIpAddresses
                   - ec2:UnassignPrivateIpAddresses
-                Resource: "*"
+                Resource: "arn:aws:ec2::::"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs::::"
+
 
   LambdaSearchCourse:
     Type: AWS::Lambda::Function
@@ -267,7 +288,25 @@ Resources:
           - "*"
       TargetFunctionArn: !Ref LambdaSearchCourse
 
+  InvokeSearchCoursePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunctionUrl
+      FunctionName: !Ref LambdaSearchCourse
+      FunctionUrlAuthType: NONE
+      Principal: "*"
+
+
+# TODO: add to outputs: lambda urls
 Outputs:
   DBEndpoint:
     Description: "db instance endpoint"
     Value: !GetAtt DBInstance.Endpoint.Address
+
+  LambdaUploadExamURL:
+    Description: "url to upload exam functionality"
+    Value: !GetAtt URLUploadExam.FunctionUrl
+
+  LambdaUploadExamURL:
+    Description: "url to course search functionality"
+    Value: !GetAtt URLSearchCourse.FunctionUrl
