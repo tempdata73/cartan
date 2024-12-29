@@ -13,7 +13,6 @@ search_bar.addEventListener("submit", function(event) {
 	})
 		.then(response => response.json())
 		.then(response => {
-			console.log("response", response);
 			const matches = response["matches"];
 			const container = document.getElementById("course-results");
 			container.innerHTML = "";
@@ -22,8 +21,6 @@ search_bar.addEventListener("submit", function(event) {
 				const table = document.createElement("table");
 
 				matches.forEach(result => {
-					console.log("result", result);
-
 					const row = document.createElement("tr")
 					result.forEach(cellData => {
 						const cell = document.createElement("td");
