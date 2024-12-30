@@ -108,7 +108,6 @@ def lambda_handler(event, context):
 
     update_db_with_exam_item(fields)
 
-    # TODO: redirect to a success page
     return {
         "statusCode": 200,
         "body": json.dumps("the exam was successfully uploaded"),

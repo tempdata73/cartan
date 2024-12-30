@@ -15,7 +15,6 @@ def get_conn_string() -> str:
 
 
 def lambda_handler(event, context):
-    print("EVENT\n", event, end="\n\n")
     pattern = event["queryStringParameters"].get("pattern")
     pattern = f"%{pattern}%"
 
