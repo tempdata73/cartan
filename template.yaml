@@ -182,22 +182,8 @@ Resources:
                 Action:
                   - s3:PutObject
                 Resource: "arn:aws:s3:::gromov/exams/*"
-              - Effect: Allow
-                Action:
-                  - ec2:CreateNetworkInterface
-                  - ec2:DescribeNetworkInterfaces
-                  - ec2:DeleteNetworkInterface
-                  - ec2:DescribeSubnets
-                  - ec2:DetachNetworkInterface
-                  - ec2:AssignPrivateIpAddresses
-                  - ec2:UnassignPrivateIpAddresses
-                Resource: "*"
-              - Effect: Allow
-                Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Resource: "arn:aws:logs:*:*:*"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 
   LambdaUploadExam:
     Type: AWS::Lambda::Function
@@ -238,8 +224,6 @@ Resources:
           - "*"
       TargetFunctionArn: !Ref LambdaUploadExam
 
-  # XXX: For some reason this doesn't work. I have to manually
-  # set the permission on the console.
   InvokeUploadExamPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -259,30 +243,10 @@ Resources:
             Principal:
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
-      # this is not strictly necessary. However, cloudformation was throwing
-      # an error if didn't put something in the SearchCourse policy.
       Policies:
         - PolicyName: vpc-access
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - ec2:CreateNetworkInterface
-                  - ec2:DescribeNetworkInterfaces
-                  - ec2:DeleteNetworkInterface
-                  - ec2:DescribeSubnets
-                  - ec2:DetachNetworkInterface
-                  - ec2:AssignPrivateIpAddresses
-                  - ec2:UnassignPrivateIpAddresses
-                Resource: "*"
-              - Effect: Allow
-                Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Resource: "arn:aws:logs:*:*:*"
-
+        - ManagedPolicyArns:
+          - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 
   LambdaSearchCourse:
     Type: AWS::Lambda::Function
