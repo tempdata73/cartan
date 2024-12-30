@@ -20,7 +20,6 @@
 			<section>
 				<form
 					id="upload-test"
-					action="https://eq2kp86y6k.execute-api.us-east-1.amazonaws.com/upload-exam"
 					method="POST"
 					enctype="multipart/form-data"
 				>
@@ -75,5 +74,31 @@
 				<a href="https://github.com/" target="_blank">Repórtalo en Github</a>.
 			</p>
 		</footer>
+		<script>
+			document.getElementById("upload-test").addEventListener("submit", async function (event) {
+				event.preventDefault();
+
+				const form = event.target;
+				const formData = new FormData(form);
+				const lambdaUrl = "https://p32k4p66fx7b24cgnjt5n5kszq0cwiwl.lambda-url.us-east-1.on.aws/"
+
+				try {
+					const response = await fetch(lambdaUrl, {
+						method: "POST",
+						body: formData,
+					});
+					console.log(response)
+
+					if (!response.ok) {
+							throw new Error(`HTTP error! status: ${response.status}`);
+					}
+
+					const result = await response.json();
+					console.log("Success:", result);
+				} catch (error) {
+					console.error("Error:", error);
+				}
+			});
+		</script>
 	</body>
 </html>

@@ -1,5 +1,5 @@
 const search_bar = document.getElementById("course-search");
-const apiURL = "https://eq2kp86y6k.execute-api.us-east-1.amazonaws.com/search-courses"
+const apiURL = "https://ycwjb7kyor3lpd3be5rbugyd4y0zcoaa.lambda-url.us-east-1.on.aws/"
 
 search_bar.addEventListener("submit", function(event) {
 	event.preventDefault();
