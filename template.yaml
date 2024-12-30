@@ -89,6 +89,35 @@ Resources:
       SubnetId: !Ref PublicSubnet
       RouteTableId: !Ref PublicRouteTable
 
+  # private routing
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  PrivateRouteTableAssociationA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnetA
+      RouteTableId: !Ref PrivateRouteTable
+
+  PrivateRouteTableAssociationB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnetB
+      RouteTableId: !Ref PrivateRouteTable
+
+  # endpoints
+  S3Endpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.s3
+      RouteTableIds:
+        - !Ref PublicRouteTable
+        - !Ref PrivateRouteTable
+      VpcEndpointType: Gateway
+      VpcId: !Ref VPC
+
   # database instance
   DBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
@@ -162,13 +191,13 @@ Resources:
                   - ec2:DetachNetworkInterface
                   - ec2:AssignPrivateIpAddresses
                   - ec2:UnassignPrivateIpAddresses
-                Resource: "arn:aws:ec2::::"
+                Resource: "*"
               - Effect: Allow
                 Action:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-                Resource: "arn:aws:logs::::"
+                Resource: "arn:aws:logs:*:*:*"
 
   LambdaUploadExam:
     Type: AWS::Lambda::Function
@@ -192,6 +221,8 @@ Resources:
         SecurityGroupIds:
           - !Ref SGAccessDB
         SubnetIds:
+          - !Ref PrivateSubnetA
+          - !Ref PrivateSubnetB
           - !Ref PublicSubnet
 
   URLUploadExam:
@@ -207,6 +238,8 @@ Resources:
           - "*"
       TargetFunctionArn: !Ref LambdaUploadExam
 
+  # XXX: For some reason this doesn't work. I have to manually
+  # set the permission on the console.
   InvokeUploadExamPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -242,13 +275,13 @@ Resources:
                   - ec2:DetachNetworkInterface
                   - ec2:AssignPrivateIpAddresses
                   - ec2:UnassignPrivateIpAddresses
-                Resource: "arn:aws:ec2::::"
+                Resource: "*"
               - Effect: Allow
                 Action:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-                Resource: "arn:aws:logs::::"
+                Resource: "arn:aws:logs:*:*:*"
 
 
   LambdaSearchCourse:
@@ -273,6 +306,8 @@ Resources:
         SecurityGroupIds:
           - !Ref SGAccessDB
         SubnetIds:
+          - !Ref PrivateSubnetA
+          - !Ref PrivateSubnetB
           - !Ref PublicSubnet
 
   URLSearchCourse:
@@ -296,8 +331,6 @@ Resources:
       FunctionUrlAuthType: NONE
       Principal: "*"
 
-
-# TODO: add to outputs: lambda urls
 Outputs:
   DBEndpoint:
     Description: "db instance endpoint"
@@ -307,6 +340,6 @@ Outputs:
     Description: "url to upload exam functionality"
     Value: !GetAtt URLUploadExam.FunctionUrl
 
-  LambdaUploadExamURL:
+  LambdaSearchCourseURL:
     Description: "url to course search functionality"
     Value: !GetAtt URLSearchCourse.FunctionUrl
