@@ -1,5 +1,7 @@
-const search_bar = document.getElementById("course-search");
 const apiURL = "https://ycwjb7kyor3lpd3be5rbugyd4y0zcoaa.lambda-url.us-east-1.on.aws/"
+
+// search bar functionality
+const search_bar = document.getElementById("course-search");
 
 search_bar.addEventListener("submit", function(event) {
 	event.preventDefault();
@@ -20,9 +22,22 @@ search_bar.addEventListener("submit", function(event) {
 			if (matches.length > 0) {
 				const table = document.createElement("table");
 
-				matches.forEach(result => {
+				matches.forEach(([code, name, count]) => {
 					const row = document.createElement("tr")
-					result.forEach(cellData => {
+
+					// redirect to the detail view of the respective course.
+					courseCell = document.createElement("td");
+
+					courseLink = document.createElement("a");
+					courseLink.href = `./course_detail.html?code=${encodeURIComponent(code)}`;
+					// courseLink.classList.add("course-link");
+					courseLink.textContent = code;
+
+					courseCell.appendChild(courseLink);
+					row.appendChild(courseCell);
+
+					// info about the course
+					[name, count].forEach(cellData => {
 						const cell = document.createElement("td");
 						cell.textContent = cellData;
 						row.appendChild(cell);
