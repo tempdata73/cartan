@@ -27,13 +27,13 @@ def lambda_handler(event, context):
     print(f"took {end - start:0.4f} secs to connect to db.")
 
     sql = """
-    SELECT course_name, course_code, count(*)
+    SELECT course_code, course_name, count(*)
     FROM exams
     WHERE
         (course_code ILIKE %s)
         OR (course_name ILIKE %s)
     GROUP BY course_code, course_name
-    ORDER BY course_name
+    ORDER BY course_code
     """
     cur.execute(sql, (pattern, pattern))
     matches = {
