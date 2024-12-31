@@ -60,17 +60,19 @@ def update_db_with_exam_item(fields: dict[str, str]) -> None:
             course_name,
             course_year,
             course_period,
+            exam_num,
             professor,
             s3_uri,
             uploaded)
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """
     params = (
         fields["code"],
         fields["name"],
         fields["year"],
         fields["period"],
-        fields.get("prof"),
+        fields.get("exam-num") or None,  # empty exam-num is "" and not null
+        fields.get("prof") or None,  # empty prof is "" and not null
         f"https://gromov.s3.us-east-1.amazonaws.com/{fields['object_name']}",
         datetime.now(),
     )

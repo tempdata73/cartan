@@ -9,7 +9,7 @@ document.getElementById("course-name").innerHTML = name;
 // create table with results
 const tableHeader = document.createElement("tr");
 
-const headers = ["Profesor", "Año", "Periodo", "Archivo"];
+const headers = ["Profesor", "Año", "Periodo", "Núm. de Parcial", "Archivo"];
 headers.forEach(text => {
 	const th = document.createElement("th");
 	th.textContent = text;
@@ -26,11 +26,12 @@ fetch(`${lambdaURL}?code=${code}`)
 		const table = document.createElement("table");
 		table.appendChild(tableHeader);
 
-		archives.forEach(([year, period, prof, s3_uri]) => {
+		archives.forEach(([year, period, prof, exam_num, s3_uri]) => {
 			const row = `<tr>
 				<td>${prof || "N/A"}</td>
 				<td>${year}</td>
 				<td>${period}</td>
+				<td>${exam_num || "N/A"}</td>
 				<td><a href="#" onclick="window.open('${s3_uri}', '_blank')">examen.pdf</a></td>
 			</tr>`;
 
