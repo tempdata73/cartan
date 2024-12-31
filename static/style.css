@@ -1,0 +1,93 @@
+header h1 {
+    font-size: 48px;
+}
+
+h1 {
+	font-size: 20px;
+}
+
+header nav ul li a {
+    font-size: 20px;
+    margin: 10px 20px;
+}
+
+body p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+#course-search {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin: 20px;
+}
+
+#upload-exam input[type="text"], input[type="number"] {
+	width: 250px;
+	height: 10px;
+}
+
+#upload-exam input[type="number"] {
+	width: 75px;
+}
+
+#upload-exam input[type="file"] {
+	font-size: 14px;
+	border: none;
+}
+
+form input {
+    width: 300px;
+    padding: 6px;
+    font-size: 16px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    outline: none;
+}
+
+form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    font-weight: 600;
+}
+
+table tr:hover {
+	background-color: #e9e9ed;
+}
+
+footer p {
+	font-size: 14px;
+}
+

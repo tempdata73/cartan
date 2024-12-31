@@ -3,31 +3,36 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://unpkg.com/@sakun/system.css" />
+		<link rel="stylesheet" href="./style.css">
 		<title>gromov</title>
 	</head>
 	<body>
-		<header>
-			<h1 id="course-name"></h1>
-		</header>
-		<main>
-			<nav>
-				<ul>
-					<li><a href="./index.html">Página principal</a></li>
-					<li><a href="./upload.html">Subir un examen</a></li>
-					<li><a href="#">Todos los cursos</a></li>
-				</ul>
-			</nav>
-			<section>
-					<table id="archive-results"></table>
+		<div class="window container">
+			<header>
+				<div class="title-bar">
+					<h1 class="title">Biblioteca de Exámenes ITAM</h1>
 				</div>
-			</section>
-		</main>
-		<footer>
-			<p>
-				¿Encontraste un bug?
-				<a href="https://github.com/" target="_blank">Repórtalo en Github</a>.
-			</p>
-		</footer>
+				<nav class="details-bar" style="justify-content: center">
+					<ul role="menu-bar">
+						<li role="menu-item" tabindex="0" aria-haspopup="false"><a href="./index.html">Página principal</a></li>
+						<li role="menu-item" tabindex="0" aria-haspopup="false"><a href="./upload.html">Subir exámenes</a></li>
+						<li role="menu-item" tabindex="0" aria-haspopup="false"><a href="./all.html">Todos los cursos</a></li>
+					</ul>
+				</nav>
+			</header>
+			<main>
+				<h1 id="course-name"></h1>
+				<div id="archive-results"></div>
+			</main>
+			<div class="separator"></div>
+			<footer>
+				<p>
+					¿Encontraste un bug?
+					<a href="https://github.com/" target="_blank">Repórtalo en Github</a>.
+				</p>
+			</footer>
+		</div>
 		<script src="./scripts/detail.js"> </script>
 	</body>
 </html>

@@ -1,5 +1,15 @@
 const apiURL = "https://ycwjb7kyor3lpd3be5rbugyd4y0zcoaa.lambda-url.us-east-1.on.aws/"
 
+// table headers
+const tableHeader = document.createElement("tr");
+const headers = ["Código", "Nombre", "Núm. de registros"];
+
+headers.forEach(text => {
+	const th = document.createElement("th");
+	th.textContent = text;
+	tableHeader.appendChild(th);
+});
+
 // search bar functionality
 function create_related_courses_table(pattern) {
 	fetch(`${apiURL}?pattern=${encodeURIComponent(pattern)}`, {
@@ -12,10 +22,12 @@ function create_related_courses_table(pattern) {
 		.then(response => {
 			const matches = response["matches"];
 			const container = document.getElementById("course-results");
+
 			container.innerHTML = "";
 
 			if (matches.length > 0) {
 				const table = document.createElement("table");
+				table.appendChild(tableHeader);
 
 				matches.forEach(([code, name, count]) => {
 					const row = document.createElement("tr")
@@ -23,8 +35,7 @@ function create_related_courses_table(pattern) {
 					// redirect to the detail view of the respective course.
 					const courseCell = document.createElement("td");
 					const courseLink = document.createElement("a");
-
-          params = `code=${encodeURIComponent(code)}&name=${encodeURIComponent(name)}`;
+					params = `code=${encodeURIComponent(code)}&name=${encodeURIComponent(name)}`;
 					courseLink.href = `./detail.html?${params}`;
 					courseLink.textContent = code;
 

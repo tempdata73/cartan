@@ -4,35 +4,46 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>gromov</title>
+		<link rel="stylesheet" href="https://unpkg.com/@sakun/system.css" />
+		<link rel="stylesheet" href="./style.css">
 	</head>
 	<body>
-		<header>
-			<h1>Archive</h1>
-		</header>
-		<main>
-			<nav>
-				<ul>
-					<li><a href="./index.html">Página principal</a></li>
-					<li><a href="./upload.html">Subir un examen</a></li>
-					<li><a href="./all.html">Todos los cursos</a></li>
-				</ul>
-			</nav>
-			<section>
+		<div class="window container">
+			<header>
+				<div class="title-bar">
+					<h1 class="title">Biblioteca de Exámenes ITAM</h1>
+				</div>
+				<nav class="details-bar" style="justify-content: center">
+					<ul role="menu-bar">
+						<li role="menu-item" tabindex="0" aria-haspopup="false"><a href="./index.html">Página principal</a></li>
+						<li role="menu-item" tabindex="0" aria-haspopup="false"><a href="./upload.html">Subir exámenes</a></li>
+						<li role="menu-item" tabindex="0" aria-haspopup="false"><a href="./all.html">Todos los cursos</a></li>
+					</ul>
+				</nav>
+			</header>
+			<main>
+				<div class="instructions">
+					<p>Bienvenido. Aquí puedes consultar y subir exámenes pasados.</p>
+					<p>
+						Instrucciones: Las búsquedas son parciales, así que no es necesario
+						escribir el código o nombre completo del curso.
+					</p>
+				</div>
+				<div class="separator"></div>
 				<form id="course-search" action="#" method="GET">
-					<label for="pattern">Nombre del curso o código:</label>
 					<input type="text" id="pattern" name="pattern" placeholder="(e.g. MAT-24431)">
-					<button type="submit">Buscar</button>
+					<button type="submit" class="btn">Buscar</button>
 				</form>
-				<p>Bienvenido. Aquí puedes consultar y subir exámenes pasados.</p>
-			</section>
-			<div id="course-results"></div>
-		</main>
-		<footer>
-			<p>
-				¿Encontraste un bug?
-				<a href="https://github.com/" target="_blank">Repórtalo en Github</a>.
-			</p>
-		</footer>
+				<div id="course-results"></div>
+			</main>
+			<div class="separator"></div>
+			<footer>
+				<p>
+					¿Encontraste un bug?
+					<a href="https://github.com/" target="_blank">Repórtalo en Github</a>.
+				</p>
+			</footer>
+		</div>
 		<script src="./scripts/search.js"></script>
 		<script>
 			const search_bar = document.getElementById("course-search");

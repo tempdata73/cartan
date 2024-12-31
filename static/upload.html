@@ -3,78 +3,83 @@
 	<head>
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<link rel="stylesheet" href="https://unpkg.com/@sakun/system.css" />
+			<link rel="stylesheet" href="./style.css" />
 			<title>gromov</title>
 	</head>
 	<body>
-		<header>
-			<h1>Subir un examen</h1>
-		</header>
-		<main>
-			<nav>
-				<ul>
-					<li><a href="./index.html">Página principal</a></li>
-					<li><a href="./upload.html">Subir un examen</a></li>
-					<li><a href="./all.html">Todos los cursos</a></li>
-				</ul>
-			</nav>
-			<section>
-				<div id="upload-message"></div>
-				<form
-					id="upload-exam"
-					method="POST"
-					enctype="multipart/form-data"
-				>
-					<label for="course-code">Código del curso:</label>
-					<input type="text" id="course-code" name="code" required>
-					<br><br>
-
-					<label for="course-name">Nombre del curso:</label>
-					<input type="text" id="course-name" name="name" required>
-					<br><br>
-
-					<label for="period">Periodo:</label>
-					<select id="period" name="period" required>
-						<option value="primavera">Primavera</option>
-						<option value="verano">Verano</option>
-						<option value="otoño">Otoño</option>
-					</select>
-					<br><br>
-
-					<label for="year">Año:</label>
-						<input
-							type="number"
-							id="year"
-							name="year"
-							min="2000"
-							max="2100"
-							required
-						>
-					<br><br>
-
-					<label for="prof">Profesor:</label>
-					<input type="text" id="prof" name="prof">
-					<br><br>
-
-					<label for="exam-file">Examen:</label>
-					<input
-						type="file"
-						id="exam-file"
-						name="file"
-						accept=".pdf"
-						required
+		<div class="window container">
+			<header>
+				<div class="title-bar">
+					<h1 class="title">Biblioteca de Exámenes ITAM</h1>
+				</div>
+				<nav class="details-bar" style="justify-content: center">
+					<ul role="menu-bar">
+						<li role="menu-item" tabindex="0" aria-haspopup="false"><a href="./index.html">Página principal</a></li>
+						<li role="menu-item" tabindex="0" aria-haspopup="false"><a href="./upload.html">Subir exámenes</a></li>
+						<li role="menu-item" tabindex="0" aria-haspopup="false"><a href="./all.html">Todos los cursos</a></li>
+					</ul>
+				</nav>
+			</header>
+			<main>
+				<section>
+					<form
+						id="upload-exam"
+						method="POST"
+						enctype="multipart/form-data"
 					>
-					<br><br>
+					<br>
+						<label for="course-code">Código del curso:</label>
+						<input type="text" id="course-code" name="code" placeholder="mat-24331" required><br><br>
 
-					<button type="submit">Subir</button>
-				</form>
-			</section>
-		</main>
-		<footer>
-			<p>
-				¿Encontraste un bug?
-				<a href="https://github.com/" target="_blank">Repórtalo en Github</a>.
-			</p>
-		</footer>
+						<label for="course-name">Nombre del curso:</label>
+						<input type="text" id="course-name" name="name" placeholder="temas selectos de álgebra ii" required><br><br>
+
+						<label for="period">Periodo:</label>
+						<select id="period" name="period" required>
+							<option value="primavera">Primavera</option>
+							<option value="verano">Verano</option>
+							<option value="otoño">Otoño</option>
+						</select><br><br>
+
+						<label for="year">Año:</label>
+							<input
+								type="number"
+								id="year"
+								name="year"
+								min="2000"
+								max="2100"
+								placeholder="2024"
+								required
+								><br><br>
+
+						<label for="prof">Profesor (opcional):</label>
+						<input type="text" id="prof" name="prof"><br><br>
+
+						<label for="exam-file">Examen (.pdf):</label>
+						<input
+							type="file"
+							id="exam-file"
+							name="file"
+							accept=".pdf"
+							required
+							><br><br>
+
+						<section class="field-row" style="justify-content: flex-start">
+							<button class="btn" type="submit">Subir</button>
+						</section><br>
+					</form>
+					<div id="upload-message"></div>
+				</section>
+			</main>
+			<div class="separator"></div>
+			<footer>
+				<p>
+					¿Encontraste un bug?
+					<a href="https://github.com/" target="_blank">Repórtalo en Github</a>.
+				</p>
+			</footer>
+		</div>
 		<script src="./scripts/upload.js"></script>
 	</body>
 </html>
