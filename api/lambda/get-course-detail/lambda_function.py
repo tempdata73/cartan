@@ -21,12 +21,14 @@ def lambda_handler(event, context):
     cur = conn.cursor()
 
     sql = """
-    SELECT course_year, course_period, professor, s3_uri
-    FROM exams
-    WHERE course_code = %s
-    ORDER BY
-        course_year DESC,
-        course_period DESC
+        SELECT course_year, course_period, professor, exam_num, s3_uri
+        FROM exams
+        WHERE course_code = %s
+        ORDER BY
+            course_year DESC,
+            course_period ASC,
+            professor ASC,
+            exam_num ASC
     """
     cur.execute(sql, (code,))
     results = cur.fetchall()
@@ -36,5 +38,5 @@ def lambda_handler(event, context):
 
     return {
         "statusCode": 200,
-        "body": json.dumps(results)
+        "body": json.dumps(results),
     }
