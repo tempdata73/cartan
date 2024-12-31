@@ -22,55 +22,64 @@
 				</nav>
 			</header>
 			<main>
-				<section>
-					<form
-						id="upload-exam"
-						method="POST"
-						enctype="multipart/form-data"
-					>
-					<br>
-						<label for="course-code">Código del curso:</label>
-						<input type="text" id="course-code" name="code" placeholder="mat-24331" required><br><br>
+				<div class="instructions">
+					<p>
+						Instrucciones: por el momento solo acepto archivos en .pdf. Pienso
+						agregar funcionalidad para .doc, .jpg, etcétera cuando tenga tiempo.
+						Si una materia está seriada, escribir el nombre con número romano
+						(e.g. eco v en vez de eco 5). Es preferible usar el nombre exacto de
+						la materia, de otra forma se crean categorías distintas y es más difícil
+						encontrar exámenes para una misma materia.
+					</p>
+				</div>
+				<div class="separator"></div>
+				<form
+					id="upload-exam"
+					method="POST"
+					enctype="multipart/form-data"
+				>
+				<br>
+					<label for="course-code">Código del curso:</label>
+					<input type="text" id="course-code" name="code" placeholder="mat-24331" required><br><br>
 
-						<label for="course-name">Nombre del curso:</label>
-						<input type="text" id="course-name" name="name" placeholder="temas selectos de álgebra ii" required><br><br>
+					<label for="course-name">Nombre del curso:</label>
+					<input type="text" id="course-name" name="name" placeholder="temas selectos de álgebra ii" required><br><br>
 
-						<label for="period">Periodo:</label>
-						<select id="period" name="period" required>
-							<option value="primavera">Primavera</option>
-							<option value="verano">Verano</option>
-							<option value="otoño">Otoño</option>
-						</select><br><br>
+					<label for="period">Periodo:</label>
+					<select id="period" name="period" required>
+						<option value="primavera">Primavera</option>
+						<option value="verano">Verano</option>
+						<option value="otoño">Otoño</option>
+					</select><br><br>
 
-						<label for="year">Año:</label>
-							<input
-								type="number"
-								id="year"
-								name="year"
-								min="2000"
-								max="2100"
-								placeholder="2024"
-								required
-								><br><br>
-
-						<label for="prof">Profesor (opcional):</label>
-						<input type="text" id="prof" name="prof"><br><br>
-
-						<label for="exam-file">Examen (.pdf):</label>
+					<label for="year">Año:</label>
 						<input
-							type="file"
-							id="exam-file"
-							name="file"
-							accept=".pdf"
+							type="number"
+							id="year"
+							name="year"
+							min="2000"
+							max="2100"
+							placeholder="2024"
 							required
 							><br><br>
 
-						<section class="field-row" style="justify-content: flex-start">
-							<button class="btn" type="submit">Subir</button>
-						</section><br>
-					</form>
-					<div id="upload-message"></div>
-				</section>
+					<label for="prof">Profesor (opcional):</label>
+					<input type="text" id="prof" name="prof"><br><br>
+
+					<label for="exam-file">Examen (.pdf):</label>
+					<input
+						type="file"
+						id="exam-file"
+						name="file"
+						accept=".pdf"
+						required
+						><br><br>
+
+					<section class="field-row" style="justify-content: flex-start">
+						<button class="btn" type="submit">Subir</button>
+					</section><br>
+				</form>
+				<div id="upload-message"></div>
 			</main>
 			<div class="separator"></div>
 			<footer>

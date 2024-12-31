@@ -30,6 +30,10 @@ body p {
 	height: 10px;
 }
 
+#upload-exam select option {
+	font-size: 14px;
+}
+
 #upload-exam input[type="number"] {
 	width: 75px;
 }
