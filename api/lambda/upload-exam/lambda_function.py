@@ -106,7 +106,7 @@ def lambda_handler(event, context):
             # XXX: This seems a bit hacky. There should be some input
             # sanitization to check that all fields are actually present.
             key = content_disposition.split("name=")[1].strip('"')
-            fields[key] = part.text
+            fields[key] = part.text.lower()
 
     update_db_with_exam_item(fields)
 
