@@ -71,7 +71,7 @@ def update_db_with_exam_item(fields: dict[str, str]) -> None:
         fields["year"],
         fields["period"],
         fields.get("prof"),
-        f"s3://gromov/{fields['object_name']}",
+        f"https://gromov.s3.us-east-1.amazonaws.com/{fields['object_name']}",
         datetime.now(),
     )
     cur.execute(sql, params)
