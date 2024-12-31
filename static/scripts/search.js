@@ -26,11 +26,11 @@ search_bar.addEventListener("submit", function(event) {
 					const row = document.createElement("tr")
 
 					// redirect to the detail view of the respective course.
-					courseCell = document.createElement("td");
+					const courseCell = document.createElement("td");
+					const courseLink = document.createElement("a");
 
-					courseLink = document.createElement("a");
-					courseLink.href = `./course_detail.html?code=${encodeURIComponent(code)}`;
-					// courseLink.classList.add("course-link");
+          params = `code=${encodeURIComponent(code)}&name=${encodeURIComponent(name)}`;
+					courseLink.href = `./detail.html?${params}`;
 					courseLink.textContent = code;
 
 					courseCell.appendChild(courseLink);
