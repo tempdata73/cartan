@@ -1,12 +1,7 @@
 const apiURL = "https://ycwjb7kyor3lpd3be5rbugyd4y0zcoaa.lambda-url.us-east-1.on.aws/"
 
 // search bar functionality
-const search_bar = document.getElementById("course-search");
-
-search_bar.addEventListener("submit", function(event) {
-	event.preventDefault();
-	const pattern = document.getElementById("pattern").value;
-
+function create_related_courses_table(pattern) {
 	fetch(`${apiURL}?pattern=${encodeURIComponent(pattern)}`, {
 		method: "GET",
 		headers: {
@@ -56,4 +51,4 @@ search_bar.addEventListener("submit", function(event) {
 			const container = document.getElementById("course-results");
 			container.innerHTML = "<p>Hubo un error inesperado. Intentar más tarde.</p>";
 		})
-});
+}

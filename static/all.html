@@ -17,14 +17,6 @@
 					<li><a href="./all.html">Todos los cursos</a></li>
 				</ul>
 			</nav>
-			<section>
-				<form id="course-search" action="#" method="GET">
-					<label for="pattern">Nombre del curso o código:</label>
-					<input type="text" id="pattern" name="pattern" placeholder="(e.g. MAT-24431)">
-					<button type="submit">Buscar</button>
-				</form>
-				<p>Bienvenido. Aquí puedes consultar y subir exámenes pasados.</p>
-			</section>
 			<div id="course-results"></div>
 		</main>
 		<footer>
@@ -35,13 +27,7 @@
 		</footer>
 		<script src="./scripts/search.js"></script>
 		<script>
-			const search_bar = document.getElementById("course-search");
-
-			search_bar.addEventListener("submit", function(event) {
-				event.preventDefault();
-				const pattern = document.getElementById("pattern").value;
-				create_related_courses_table(pattern);
-			});
+			create_related_courses_table("");
 		</script>
 	</body>
 </html>

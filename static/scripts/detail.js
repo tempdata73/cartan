@@ -14,9 +14,9 @@ fetch(`${lambdaURL}?code=${code}`)
 
 		archives.forEach(([year, period, prof, s3_uri]) => {
 			const row = `<tr>
+				<td>${prof || "N/A"}</td>
 				<td>${year}</td>
 				<td>${period}</td>
-				<td>${prof}</td>
 				<td><a href="#" onclick="window.open('${s3_uri}', '_blank')">archivo</a></td>
 			</tr>`;
 
