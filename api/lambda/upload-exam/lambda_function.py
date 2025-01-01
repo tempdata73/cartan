@@ -32,7 +32,7 @@ def upload_exam_to_s3(object_name, content) -> None:
 
         response = s3.put_object(
             Body=content,
-            Bucket="cartan.xyz",
+            Bucket="www.cartan.xyz",
             Key=object_name,
             ContentType="application/pdf",
         )
@@ -73,7 +73,7 @@ def update_db_with_exam_item(fields: dict[str, str]) -> None:
         fields["period"],
         fields.get("exam-num") or None,  # empty exam-num is "" and not null
         fields.get("prof") or None,  # empty prof is "" and not null
-        f"https://s3.us-east-1.amazonaws.com/cartan.xyz/{fields['object_name']}",
+        f"https://s3.us-east-1.amazonaws.com/www.cartan.xyz/{fields['object_name']}",
         datetime.now(),
     )
     cur.execute(sql, params)
