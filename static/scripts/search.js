@@ -1,4 +1,4 @@
-const apiURL = "https://ycwjb7kyor3lpd3be5rbugyd4y0zcoaa.lambda-url.us-east-1.on.aws/"
+const apiURL = "https://3wbgubxjdri4nqnirl6d2ksswq0xtxda.lambda-url.us-east-1.on.aws/"
 
 // table headers
 const tableHeader = document.createElement("tr");

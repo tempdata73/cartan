@@ -1,4 +1,4 @@
-const lambdaURL = "https://lpn5jcmenithxdym2artgnyez40yfcnc.lambda-url.us-east-1.on.aws/";
+const lambdaURL = "https://qx2avobor2b7i6wkz4iv5hj24i0neqyh.lambda-url.us-east-1.on.aws/";
 const params = new URLSearchParams(window.location.search);
 
 // set page title

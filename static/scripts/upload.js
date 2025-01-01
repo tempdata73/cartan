@@ -1,4 +1,4 @@
-const lambdaUrl = "https://p32k4p66fx7b24cgnjt5n5kszq0cwiwl.lambda-url.us-east-1.on.aws/"
+const lambdaUrl = "https://x2a3ca6yzbbkxlcjuf27ix23xq0uzbke.lambda-url.us-east-1.on.aws/"
 
 document.getElementById("upload-exam").addEventListener("submit", (e) => {
 	e.preventDefault();
