@@ -62,7 +62,7 @@ def update_db_with_exam_item(fields: dict[str, str]) -> None:
             course_period,
             exam_num,
             professor,
-            s3_uri,
+            s3_object_name,
             uploaded)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """
@@ -73,7 +73,7 @@ def update_db_with_exam_item(fields: dict[str, str]) -> None:
         fields["period"],
         fields.get("exam-num") or None,  # empty exam-num is "" and not null
         fields.get("prof") or None,  # empty prof is "" and not null
-        f"https://s3.us-east-1.amazonaws.com/www.cartan.xyz/{fields['object_name']}",
+        fields["object_name"],
         datetime.now(),
     )
     cur.execute(sql, params)

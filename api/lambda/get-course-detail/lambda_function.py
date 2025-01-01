@@ -21,7 +21,7 @@ def lambda_handler(event, context):
     cur = conn.cursor()
 
     sql = """
-        SELECT course_year, course_period, professor, exam_num, s3_uri
+        SELECT course_year, course_period, professor, exam_num, s3_object_name
         FROM exams
         WHERE course_code = %s
         ORDER BY

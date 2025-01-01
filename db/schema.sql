@@ -8,6 +8,6 @@ CREATE TABLE exams (
 	course_period period NOT NULL,
 	professor VARCHAR(255),
 	exam_num INT,
-	s3_uri TEXT NOT NULL,
+	s3_object_name TEXT NOT NULL,
 	uploaded TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );

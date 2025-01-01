@@ -26,13 +26,13 @@ fetch(`${lambdaURL}?code=${code}`)
 		const table = document.createElement("table");
 		table.appendChild(tableHeader);
 
-		archives.forEach(([year, period, prof, exam_num, s3_uri]) => {
+		archives.forEach(([year, period, prof, exam_num, object_name]) => {
 			const row = `<tr>
 				<td>${prof || "N/A"}</td>
 				<td>${year}</td>
 				<td>${period}</td>
 				<td>${exam_num || "N/A"}</td>
-				<td><a href="#" onclick="window.open('${s3_uri}', '_blank')">examen.pdf</a></td>
+				<td><a href="#" onclick="window.open('www.cartan.xyz/${object_name}', '_blank')">examen.pdf</a></td>
 			</tr>`;
 
 		table.innerHTML += row;
