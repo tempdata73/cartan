@@ -181,7 +181,21 @@ Resources:
               - Effect: Allow
                 Action:
                   - s3:PutObject
-                Resource: "arn:aws:s3:::cartan.xyz/exams/*"
+                Resource: "arn:aws:s3:::www.cartan.xyz/exams/*"
+        - PolicyName: VPCAccessPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ec2:CreateNetworkInterface
+                  - ec2:DeleteNetworkInterface
+                  - ec2:DescribeNetworkInterfaces
+                  - ec2:DescribeSubnets
+                  - ec2:DetachNetworkInterface
+                  - ec2:AssignPrivateIpAddresses
+                  - ec2:UnassignPrivateIpAddresses
+                Resource: "*"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 
@@ -189,7 +203,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Code: 
-        S3Bucket: "cartan.xyz"
+        S3Bucket: "www.cartan.xyz"
         S3Key: "lambda/upload-exam/deployment.zip"
       Environment:
         Variables:
@@ -221,7 +235,8 @@ Resources:
         AllowMethods:
           - POST
         AllowOrigins:
-          - "cartan.xyz"
+          - "https://cartan.xyz"
+          - "https://www.cartan.xyz"
       TargetFunctionArn: !Ref LambdaUploadExam
 
   InvokeUploadExamPermission:
@@ -244,15 +259,28 @@ Resources:
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
       Policies:
-        - PolicyName: vpc-access
-        - ManagedPolicyArns:
-          - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        - PolicyName: VPCAccessPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ec2:CreateNetworkInterface
+                  - ec2:DeleteNetworkInterface
+                  - ec2:DescribeNetworkInterfaces
+                  - ec2:DescribeSubnets
+                  - ec2:DetachNetworkInterface
+                  - ec2:AssignPrivateIpAddresses
+                  - ec2:UnassignPrivateIpAddresses
+                Resource: "*"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 
   LambdaSearchCourse:
     Type: AWS::Lambda::Function
     Properties:
       Code: 
-        S3Bucket: "cartan.xyz"
+        S3Bucket: "www.cartan.xyz"
         S3Key: "lambda/search-course/deployment.zip"
       Environment:
         Variables:
@@ -284,7 +312,8 @@ Resources:
         AllowMethods:
           - GET
         AllowOrigins:
-          - "cartan.xyz"
+          - "https://cartan.xyz"
+          - "https://www.cartan.xyz"
       TargetFunctionArn: !Ref LambdaSearchCourse
 
   InvokeSearchCoursePermission:
@@ -300,7 +329,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Code: 
-        S3Bucket: "cartan.xyz"
+        S3Bucket: "www.cartan.xyz"
         S3Key: "lambda/get-course-detail/deployment.zip"
       Environment:
         Variables:
@@ -332,7 +361,8 @@ Resources:
         AllowMethods:
           - GET
         AllowOrigins:
-          - "cartan.xyz"
+          - "https://cartan.xyz"
+          - "https://www.cartan.xyz"
       TargetFunctionArn: !Ref LambdaDetailCourse
 
   InvokeDetailCoursePermission:
