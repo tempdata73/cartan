@@ -1,5 +1,3 @@
-const lambdaUrl = "https://x2a3ca6yzbbkxlcjuf27ix23xq0uzbke.lambda-url.us-east-1.on.aws/"
-
 document.getElementById("upload-exam").addEventListener("submit", (e) => {
 	e.preventDefault();
 	divMsg = document.getElementById("upload-message");
@@ -7,7 +5,7 @@ document.getElementById("upload-exam").addEventListener("submit", (e) => {
 
 	const formData = new FormData(e.target);
 
-	fetch(lambdaUrl, {
+	fetch("https://api.cartan.xyz/upload-exam", {
 		method: "POST",
 		body: formData
 	})

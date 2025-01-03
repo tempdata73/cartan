@@ -1,4 +1,3 @@
-const lambdaURL = "https://qx2avobor2b7i6wkz4iv5hj24i0neqyh.lambda-url.us-east-1.on.aws/";
 const params = new URLSearchParams(window.location.search);
 
 // set page title
@@ -18,7 +17,7 @@ headers.forEach(text => {
 
 // get all registered exams for corresponding course
 const code = params.get("code");
-fetch(`${lambdaURL}?code=${code}`)
+fetch(`https://api.cartan.xyz/get-course-detail?code=${code}`)
 	.then(response => response.json())
 	.then(archives => {
 		console.log(archives);
@@ -32,7 +31,7 @@ fetch(`${lambdaURL}?code=${code}`)
 				<td>${year}</td>
 				<td>${period}</td>
 				<td>${exam_num || "N/A"}</td>
-				<td><a href="#" onclick="window.open('www.cartan.xyz/${object_name}', '_blank')">examen.pdf</a></td>
+				<td><a href="#" onclick="window.open('${object_name}', '_blank')">examen.pdf</a></td>
 			</tr>`;
 
 		table.innerHTML += row;

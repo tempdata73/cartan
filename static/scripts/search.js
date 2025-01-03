@@ -1,5 +1,3 @@
-const apiURL = "https://3wbgubxjdri4nqnirl6d2ksswq0xtxda.lambda-url.us-east-1.on.aws/"
-
 // table headers
 const tableHeader = document.createElement("tr");
 const headers = ["Código", "Nombre", "Núm. de registros"];
@@ -12,7 +10,7 @@ headers.forEach(text => {
 
 // search bar functionality
 function create_related_courses_table(pattern) {
-	fetch(`${apiURL}?pattern=${encodeURIComponent(pattern)}`, {
+	fetch(`https://api.cartan.xyz/search-course?pattern=${encodeURIComponent(pattern)}`, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",

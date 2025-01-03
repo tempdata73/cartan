@@ -225,28 +225,6 @@ Resources:
           - !Ref PrivateSubnetB
           - !Ref PublicSubnet
 
-  URLUploadExam:
-    Type: AWS::Lambda::Url
-    Properties:
-      AuthType: NONE
-      Cors:
-        AllowHeaders:
-          - "*"
-        AllowMethods:
-          - POST
-        AllowOrigins:
-          - "https://cartan.xyz"
-          - "https://www.cartan.xyz"
-      TargetFunctionArn: !Ref LambdaUploadExam
-
-  InvokeUploadExamPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:invokeFunctionUrl
-      FunctionName: !Ref LambdaUploadExam
-      FunctionUrlAuthType: NONE
-      Principal: "*"
-
   # lambda: search courses
   RoleBasicExecution:
     Type: AWS::IAM::Role
@@ -302,28 +280,6 @@ Resources:
           - !Ref PrivateSubnetB
           - !Ref PublicSubnet
 
-  URLSearchCourse:
-    Type: AWS::Lambda::Url
-    Properties:
-      AuthType: NONE
-      Cors:
-        AllowHeaders:
-          - "*"
-        AllowMethods:
-          - GET
-        AllowOrigins:
-          - "https://cartan.xyz"
-          - "https://www.cartan.xyz"
-      TargetFunctionArn: !Ref LambdaSearchCourse
-
-  InvokeSearchCoursePermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:invokeFunctionUrl
-      FunctionName: !Ref LambdaSearchCourse
-      FunctionUrlAuthType: NONE
-      Principal: "*"
-
   # lambda: detail course
   LambdaDetailCourse:
     Type: AWS::Lambda::Function
@@ -351,41 +307,166 @@ Resources:
           - !Ref PrivateSubnetB
           - !Ref PublicSubnet
 
-  URLDetailCourse:
-    Type: AWS::Lambda::Url
+  # api gateway
+  HttpApi:
+    Type: "AWS::ApiGatewayV2::Api"
     Properties:
-      AuthType: NONE
-      Cors:
+      Name: cartan
+      Description: api functionality for the cartan project
+      ProtocolType: HTTP
+      CorsConfiguration:
         AllowHeaders:
           - "*"
         AllowMethods:
           - GET
+          - POST
         AllowOrigins:
           - "https://cartan.xyz"
           - "https://www.cartan.xyz"
-      TargetFunctionArn: !Ref LambdaDetailCourse
+          - "https://api.cartan.xyz"
+      DisableExecuteApiEndpoint: true
 
-  InvokeDetailCoursePermission:
-    Type: AWS::Lambda::Permission
+  ApiDomainName:
+    Type: "AWS::ApiGatewayV2::DomainName"
     Properties:
-      Action: lambda:invokeFunctionUrl
+      DomainName: api.cartan.xyz
+      DomainNameConfigurations:
+        - EndpointType: REGIONAL
+          CertificateArn: arn:aws:acm:us-east-1:118233586442:certificate/00240809-f0a3-462b-a803-c7741396bfb4
+
+  MappingDomainName:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    Properties:
+      ApiId: !Ref HttpApi
+      DomainName: !Ref ApiDomainName
+      Stage: !Ref StageDefault
+
+  StageDefault:
+    Type: "AWS::ApiGatewayV2::Stage"
+    Properties:
+      ApiId: !Ref HttpApi
+      AutoDeploy: true
+      Description: prod stage
+      StageName: "$default"
+
+  # api: lambda proxy: upload exam
+  IntegrationUploadExam:
+    Type: "AWS::ApiGatewayV2::Integration"
+    Properties:
+      ApiId: !Ref HttpApi
+      Description: upload-exam lambda integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Join
+        - ""
+        - - "arn:"
+          - !Ref "AWS::Partition"
+          - ":apigateway:"
+          - !Ref "AWS::Region"
+          - ":lambda:path/2015-03-31/functions/"
+          - !GetAtt LambdaUploadExam.Arn
+          - /invocations
+      IntegrationMethod: POST
+      PayloadFormatVersion: "2.0"
+
+  RouteUploadExam:
+    Type: "AWS::ApiGatewayV2::Route"
+    Properties:
+      ApiId: !Ref HttpApi
+      AuthorizationType: NONE
+      RouteKey: "POST /upload-exam"
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref IntegrationUploadExam
+
+  PemissionUploadExam:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref LambdaUploadExam
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub
+        "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*"
+
+  # api: lambda proxy: search course
+  IntegrationSearchCourse:
+    Type: "AWS::ApiGatewayV2::Integration"
+    Properties:
+      ApiId: !Ref HttpApi
+      Description: search-course lambda integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Join
+        - ""
+        - - "arn:"
+          - !Ref "AWS::Partition"
+          - ":apigateway:"
+          - !Ref "AWS::Region"
+          - ":lambda:path/2015-03-31/functions/"
+          - !GetAtt LambdaSearchCourse.Arn
+          - /invocations
+      IntegrationMethod: POST
+      PayloadFormatVersion: "2.0"
+
+  RouteSearchCourse:
+    Type: "AWS::ApiGatewayV2::Route"
+    Properties:
+      ApiId: !Ref HttpApi
+      AuthorizationType: NONE
+      RouteKey: "GET /search-course"
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref IntegrationSearchCourse
+
+  PemissionSearchCourse:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref LambdaSearchCourse
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub
+        "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*"
+
+  # api: lambda proxy: get course detail
+  IntegrationDetailCourse:
+    Type: "AWS::ApiGatewayV2::Integration"
+    Properties:
+      ApiId: !Ref HttpApi
+      Description: get-course-detail lambda integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Join
+        - ""
+        - - "arn:"
+          - !Ref "AWS::Partition"
+          - ":apigateway:"
+          - !Ref "AWS::Region"
+          - ":lambda:path/2015-03-31/functions/"
+          - !GetAtt LambdaDetailCourse.Arn
+          - /invocations
+      IntegrationMethod: POST
+      PayloadFormatVersion: "2.0"
+
+  RouteDetailCourse:
+    Type: "AWS::ApiGatewayV2::Route"
+    Properties:
+      ApiId: !Ref HttpApi
+      AuthorizationType: NONE
+      RouteKey: "GET /get-course-detail"
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref IntegrationDetailCourse
+
+  PemissionDetailCourse:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      Action: lambda:InvokeFunction
       FunctionName: !Ref LambdaDetailCourse
-      FunctionUrlAuthType: NONE
-      Principal: "*"
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub
+        "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*"
 
 Outputs:
   DBEndpoint:
     Description: "db instance endpoint"
     Value: !GetAtt DBInstance.Endpoint.Address
-
-  LambdaUploadExamURL:
-    Description: "url to upload exam functionality"
-    Value: !GetAtt URLUploadExam.FunctionUrl
-
-  LambdaSearchCourseURL:
-    Description: "url to course search functionality"
-    Value: !GetAtt URLSearchCourse.FunctionUrl
-
-  LambdaDetailCourseURL:
-    Description: "url to course dktail functionality"
-    Value: !GetAtt URLDetailCourse.FunctionUrl
