@@ -20,7 +20,6 @@ const code = params.get("code");
 fetch(`https://api.cartan.xyz/get-course-detail?code=${code}`)
 	.then(response => response.json())
 	.then(archives => {
-		console.log(archives);
 		const div = document.getElementById("archive-results");
 		const table = document.createElement("table");
 		table.appendChild(tableHeader);
