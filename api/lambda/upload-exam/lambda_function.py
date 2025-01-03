@@ -12,9 +12,6 @@ from requests_toolbelt import MultipartDecoder
 from botocore.exceptions import ClientError
 
 
-s3 = boto3.client("s3")
-
-
 def get_conn_string() -> str:
     creds = {
         "dbname": os.environ["DB_NAME"],
@@ -23,25 +20,6 @@ def get_conn_string() -> str:
         "password": os.environ["DB_PASSWORD"],
     }
     return " ".join(f"{key}={val}" for key, val in creds.items())
-
-
-def upload_exam_to_s3(object_name, content) -> None:
-    print("uploading exam to s3...")
-    try:
-        start = time.time()
-
-        response = s3.put_object(
-            Body=content,
-            Bucket="www.cartan.xyz",
-            Key=object_name,
-            ContentType="application/pdf",
-        )
-
-        end = time.time()
-        print(f"took {end - start:0.4f} secs to upload exam to s3")
-    except ClientError as e:
-        print("error uploading course exam")
-        raise e
 
 
 def update_db_with_exam_item(fields: dict[str, str]) -> None:
@@ -84,6 +62,25 @@ def update_db_with_exam_item(fields: dict[str, str]) -> None:
     conn.close()
 
 
+def create_presigned_url(bucket_name, object_name, expiration=600):
+    s3 = boto3.client("s3")
+    try:
+        url = s3.generate_presigned_url(
+            "put_object",
+            Params={
+                "Bucket": bucket_name,
+                "Key": object_name,
+                "ContentType": "application/pdf",
+            },
+            ExpiresIn=expiration,
+        )
+    except ClientError as e:
+        print("error generating presigned url:")
+        raise e
+
+    return url
+
+
 def lambda_handler(event, context):
     if event["isBase64Encoded"]:
         content = base64.b64decode(event["body"])
@@ -91,26 +88,33 @@ def lambda_handler(event, context):
         content = event["body"]
     decoder = MultipartDecoder(content, event["headers"].get("content-type"))
 
-    # parse form
-    fields = {}
+    fields = {
+        "object_name": f"exams/{uuid.uuid4()}.pdf",
+    }
+
     print("parsing form...")
     for part in decoder.parts:
         content_disposition = part.headers[b"Content-Disposition"].decode()
 
-        # upload to s3
-        if "filename" in content_disposition:
-            fields["object_name"] = f"exams/{uuid.uuid4()}.pdf"
-            upload_exam_to_s3(fields["object_name"], part.content)
-
-        else:
-            # XXX: This seems a bit hacky. There should be some input
-            # sanitization to check that all fields are actually present.
-            key = content_disposition.split("name=")[1].strip('"')
-            fields[key] = part.text.lower()
+        # XXX: This seems a bit hacky. There should be some input
+        # sanitization to check that all fields are actually present.
+        key = content_disposition.split("name=")[1].strip('"')
+        fields[key] = part.text.lower()
 
     update_db_with_exam_item(fields)
 
+    print("creating presigned url...")
+    url = create_presigned_url("www.cartan.xyz", fields["object_name"])
+
     return {
         "statusCode": 200,
-        "body": json.dumps("the exam was successfully uploaded"),
+        "body": json.dumps(
+            {
+                "presignedUrl": url,
+                "objectName": fields["object_name"],
+            }
+        ),
+        "headers": {
+            "Content-Type": "application/json",
+        },
     }
